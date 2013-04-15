@@ -4,7 +4,8 @@
   "description": "SessionSockets usage example",
   "author": "Wagner Camarao <functioncallback@gmail.com>",
   "engines": {
-    "node": "0.8.x"
+    "node": "0.8.x",
+    "npm":  "1.2.x"
   },
   "dependencies": {
     "connect": "2.7.1",
