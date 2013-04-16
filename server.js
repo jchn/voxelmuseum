@@ -22,6 +22,7 @@ app.configure(function () {
   Instagram.set('client_id', 'd13bba7c8b7f4d868187995c3dc9c240');
   Instagram.set('client_secret', 'bb49d84b32d94b7ebea146aa2db89806');
 
+  console.log('app configured');
 
 });
 
@@ -33,7 +34,8 @@ var server = http.createServer(app)
 // assuming io is the Socket.IO server object
 io.configure(function () { 
   io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
+  io.set("polling duration", 10);
+  console.log('io configured'); 
 });
 
 var SessionSockets = require('session.socket.io')
@@ -43,7 +45,7 @@ app.get('/', function(req, res) {
   req.session.foo = req.session.foo || 'bar';
   res.render('index');
 });
-/*
+
 app.get('/subscribe/', function(req, res){
   console.log(req.query['hub.challenge']);
   var challenge = req.query['hub.challenge'];
@@ -94,5 +96,6 @@ sessionSockets.on('connection', function (err, socket, session) {
 
 
 });
-*/
+
 server.listen(5000);
+console.log('now listening to port 5000');
