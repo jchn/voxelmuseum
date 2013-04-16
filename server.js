@@ -24,8 +24,6 @@ app.configure(function () {
 
   Instagram.set('callback_url', 'http://voxelmuseum.herokuapp.com/subscribe/');
 
-  Instagram.tags.subscribe({ object_id: 'justinbieber' });
-
   console.log('app configured');
 
 });
@@ -94,3 +92,7 @@ sessionSockets.on('connection', function (err, socket, session) {
 var port = process.env.PORT || 5000;
 server.listen(port);
 console.log('now listening to port ' + port);
+
+console.log('subscribing');
+console.log( Instagram.tags.subscribe({ object_id: 'justinbieber' }) );
+
