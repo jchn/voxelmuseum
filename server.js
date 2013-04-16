@@ -66,9 +66,9 @@ app.post('/subscribe/', function(req, res){
 app.post('/', function(req, res){
 
   console.log('subscribing');
+  console.log(req.body.subto);
   console.log( Instagram.tags.subscribe({ object_id: 'justinbieber' }) );
-
-  if(socket) socket.emit('subscribed', req.body);
+  res.end('success!');
 });
 
 sessionSockets.on('connection', function (err, socket, session) {

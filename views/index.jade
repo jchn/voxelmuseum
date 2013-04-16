@@ -74,11 +74,17 @@ html
 
       socket.on('subscribed', function(data){
         console.log( 'subscribed to ' + data );
+        alert('subbed');
       });
 
       $('button.sub').on('click', function(e){
+        console.log('sub button clicked');
         var data = { subto : $('input#subscribe').val() };
         $.post('/', data, function(data){
           console.log('succes');
+        },
+        function(msg){
+          console.log('error posting');
+          console.log(msg);
         });
       });
