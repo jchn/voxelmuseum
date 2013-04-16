@@ -25,7 +25,6 @@ app.configure(function () {
   Instagram.set('callback_url', 'http://voxelmuseum.herokuapp.com/subscribe/');
 
   Instagram.tags.subscribe({ object_id: 'justinbieber' });
-  console.log('subscribed with ' + address);
 
   console.log('app configured');
 
