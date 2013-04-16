@@ -43,7 +43,7 @@ app.get('/', function(req, res) {
   req.session.foo = req.session.foo || 'bar';
   res.render('index');
 });
-
+/*
 app.get('/subscribe/', function(req, res){
   console.log(req.query['hub.challenge']);
   var challenge = req.query['hub.challenge'];
@@ -94,5 +94,5 @@ sessionSockets.on('connection', function (err, socket, session) {
 
 
 });
-
+*/
 server.listen(5000);
