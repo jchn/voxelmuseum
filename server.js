@@ -30,6 +30,12 @@ var socket = null;
 var server = http.createServer(app)
   , io = require('socket.io').listen(server);
 
+// assuming io is the Socket.IO server object
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
+
 var SessionSockets = require('session.socket.io')
   , sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
 
@@ -63,7 +69,7 @@ app.get('/set/', function(req, res){
 });
 
 sessionSockets.on('connection', function (err, socket, session) {
-
+  console.log('connected port 5000');
   socket = socket;
 
   socket.emit('session', session);
