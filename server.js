@@ -63,6 +63,14 @@ app.post('/subscribe/', function(req, res){
 
 });
 
+app.post('/', function(req, res){
+
+  console.log('subscribing');
+  console.log( Instagram.tags.subscribe({ object_id: 'justinbieber' }) );
+
+  if(socket) socket.emit('subscribed', req.body);
+});
+
 sessionSockets.on('connection', function (err, socket, session) {
   console.log('connected port 5000');
   socket = socket;
@@ -91,8 +99,3 @@ sessionSockets.on('connection', function (err, socket, session) {
 });
 var port = process.env.PORT || 5000;
 server.listen(port);
-console.log('now listening to port ' + port);
-
-console.log('subscribing');
-console.log( Instagram.tags.subscribe({ object_id: 'justinbieber' }) );
-

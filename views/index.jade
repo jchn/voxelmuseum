@@ -24,6 +24,10 @@ html
       }
 
   body
+
+    input(type='text' id='subscribe')
+    button(class='sub')
+
     h1 SessionSockets usage example
     p='You should see below your session hash with "bar" as initial value for the "foo" key'
 
@@ -66,4 +70,15 @@ html
           var currData = data[dataLength];
           $('body').append('<p>' + currData.time + '</p>');
         }
+      });
+
+      socket.on('subscribed', function(data){
+        console.log( 'subscribed to ' + data );
+      });
+
+      $('button.sub').on('click', function(e){
+        var data = { subto : $('input#subscribe').val() };
+        $.post('/', data, function(data){
+          console.log('succes');
+        });
       });
