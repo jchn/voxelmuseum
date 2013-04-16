@@ -22,6 +22,11 @@ app.configure(function () {
   Instagram.set('client_id', 'd13bba7c8b7f4d868187995c3dc9c240');
   Instagram.set('client_secret', 'bb49d84b32d94b7ebea146aa2db89806');
 
+  Instagram.set('callback_url', 'http://voxelmuseum.herokuapp.com/subscribe/');
+
+  Instagram.tags.subscribe({ object_id: 'justinbieber' });
+  console.log('subscribed with ' + address);
+
   console.log('app configured');
 
 });
@@ -61,15 +66,6 @@ app.post('/subscribe/', function(req, res){
 
 });
 
-
-app.get('/set/', function(req, res){
-  var address = req.query.address;
-
-  Instagram.set('callback_url', 'http://' + address + '/subscribe/');
-  Instagram.tags.subscribe({ object_id: 'justinbieber' });
-  console.log('subscribed with ' + address);
-});
-
 sessionSockets.on('connection', function (err, socket, session) {
   console.log('connected port 5000');
   socket = socket;
@@ -98,4 +94,4 @@ sessionSockets.on('connection', function (err, socket, session) {
 });
 var port = process.env.PORT || 5000;
 server.listen(port);
-console.log('now listening to port 5000');
+console.log('now listening to port ' + port);
