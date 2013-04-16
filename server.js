@@ -96,6 +96,6 @@ sessionSockets.on('connection', function (err, socket, session) {
 
 
 });
-
-server.listen(5000);
+var port = process.env.PORT || 5000;
+server.listen(port);
 console.log('now listening to port 5000');
