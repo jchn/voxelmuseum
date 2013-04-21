@@ -19,19 +19,15 @@ Instagram.set('callback_url', settings.basePath + 'subscribe/');
 // Send the client html.
 app.get('/', function(req, res) {
     res.render('test');
-    console.log('callback_url : ' + settings.basePath + 'subscribe/');
-    //console.log(Instagram.media.unsubscribe_all());
-    console.log('instagram : ');
-    console.log( Instagram );
-    console.log( 'subscribing:' );
-    console.log(Instagram.tags.subscribe({ object_id: 'justinbieber' }));
+    //console.log( 'subscribing:' );
+    //console.log(Instagram.tags.subscribe({ object_id: 'justinbieber' }));
+    console.log( 'popular stuff' );
+    console.log( Instagram.media.popular() );
 })
 
 // Send instagram verification afther their get request
 app.get('/subscribe/', function(req, res){
-  console.log(req.query['hub.challenge']);
-  var challenge = req.query['hub.challenge'];
-  res.send(challenge);
+  Instagram.subscriptions.handshake(req, res);
 });
 
 // Handle instagram updates
