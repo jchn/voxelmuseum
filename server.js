@@ -19,8 +19,11 @@ Instagram.set('callback_url', settings.basePath + 'subscribe/');
 // Send the client html.
 app.get('/', function(req, res) {
     res.render('test');
-    console.log('callback_url : ' + settings.basePath + 'subscribe');
-    console.log(Instagram.media.unsubscribe_all());
+    console.log('callback_url : ' + settings.basePath + 'subscribe/');
+    //console.log(Instagram.media.unsubscribe_all());
+    console.log('instagram : ');
+    console.log( Instagram );
+    console.log( 'subscribing:' );
     console.log(Instagram.tags.subscribe({ object_id: 'justinbieber' }));
 })
 
