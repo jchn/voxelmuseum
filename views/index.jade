@@ -3,7 +3,7 @@ doctype 5
 html
   head
     title SessionSockets usage example
-    script(type='text/javascript', src='/socket.io/socket.io.js')
+    //script(type='text/javascript', src='/socket.io/socket.io.js')
     script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
 
     style(type='text/css')
@@ -36,55 +36,25 @@ html
     span=' then you should see foo value updated'
 
     script(type='text/javascript')
-      var socket = io.connect();
 
-      socket.on('session', function (session) {
-        document.getElementById('t').value = JSON.stringify(session);
-      });
-
-      document.getElementById('foo').addEventListener('keyup', function () {
-        socket.emit('foo', this.value);
-      });
-
-      socket.on('insta', function(data){
-        console.log(data);
-
-        var dataLength = data.length;
-
-        while( dataLength-- ) {
-
-          var currData = data[dataLength];
-
-          $('body').append('<img src="' + currData.images.standard_resolution.url + '" alt="test" />');
-
-        }
-
-      });
-
-      socket.on('subdata', function(data){
-        console.log('recieved sub data');
-        console.log(data);
-
-        var dataLength = data.length;
-        while(dataLength--) {
-          var currData = data[dataLength];
-          $('body').append('<p>' + currData.time + '</p>');
-        }
-      });
-
-      socket.on('subscribed', function(data){
-        console.log( 'subscribed to ' + data );
-        alert('subbed');
-      });
-
-      $('button.sub').on('click', function(e){
-        console.log('sub button clicked');
-        var data = { subto : $('input#subscribe').val() };
-        $.post('/', data, function(data){
-          console.log('succes');
-        },
-        function(msg){
-          console.log('error posting');
-          console.log(msg);
+      $('button.sub').on('click', function(){
+          console.log('posting');
+           $.ajax({
+            type: "POST",
+            url: '/',
+            data: $(this).val(),
+            success : function(data, textStatus, jqXHR){
+              alert('test success');
+              console.log(data);
+            },
+            complete : function() {
+              console.log('request complete');
+            },
+            error : function( jqXHR, textStatus, errorThrown) {
+              console.log('error : ' + textStatus);
+              console.log(errorThrown);
+            },
+            dataType: 'text'
+          });   
         });
-      });
+

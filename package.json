@@ -5,7 +5,7 @@
   "author": "Wagner Camarao <functioncallback@gmail.com>",
   "engines": {
     "node": "0.8.x",
-    "npm":  "1.2.x"
+    "npm": "1.2.x"
   },
   "dependencies": {
     "connect": "2.7.1",
@@ -13,7 +13,8 @@
     "jade": "0.28.2",
     "session.socket.io": "0.1.6",
     "socket.io": "0.9.14",
-    "instagram-node-lib": "~0.1.1"
+    "instagram-node-lib": "~0.1.1",
+    "express.io": "~1.1.11"
   },
   "main": "server.js",
   "scripts": {
