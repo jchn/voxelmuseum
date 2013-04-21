@@ -19,6 +19,9 @@ Instagram.set('callback_url', settings.basePath + 'subscribe/');
 // Send the client html.
 app.get('/', function(req, res) {
     res.render('test');
+    console.log('callback_url : ' + settings.basePath + 'subscribe');
+    console.log(Instagram.media.unsubscribe_all());
+    console.log(Instagram.tags.subscribe({ object_id: 'justinbieber' }));
 })
 
 // Send instagram verification afther their get request
@@ -26,6 +29,12 @@ app.get('/subscribe/', function(req, res){
   console.log(req.query['hub.challenge']);
   var challenge = req.query['hub.challenge'];
   res.send(challenge);
+});
+
+// Handle instagram updates
+app.post('/subscribe/', function(req, res){
+  console.log('new update');
+  console.log(req.body);
 });
 
 app.get('/unsubscribe/', function(req, res){
