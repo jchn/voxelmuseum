@@ -4,6 +4,12 @@ var settings = require('./settings'),
     app = settings.app;
 app.http().io();
 
+// assuming io is the Socket.IO server object
+app.io.configure(function () { 
+  app.io.set("transports", ["xhr-polling"]); 
+  app.io.set("polling duration", 10); 
+});
+
 // Configure instagram
 Instagram.set('client_id', 'settings.CLIENT_ID');
 Instagram.set('client_secret', 'settings.CLIENT_SECRET');
