@@ -21,8 +21,10 @@ app.get('/', function(req, res) {
     res.render('test');
     //console.log( 'subscribing:' );
     //console.log(Instagram.tags.subscribe({ object_id: 'justinbieber' }));
+    console.log( 'client_id : ' + settings.CLIENT_ID );
+    console.log( 'client_secrect : ' + settings.CLIENT_SECRET );
     console.log( 'popular stuff' );
-    console.log( Instagram.media.popular() );
+    console.log( Instagram.media.popular({}) );
 })
 
 // Send instagram verification afther their get request
