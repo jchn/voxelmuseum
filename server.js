@@ -1,6 +1,7 @@
 var settings = require('./settings'),
     connect = require('connect'),
-    Instagram = require('instagram-node-lib'),
+    Instagram = settings.instagram,
+    Queue = require('insta-queue')(Instagram),
     app = settings.app;
 app.http().io();
 
@@ -10,21 +11,13 @@ app.io.configure(function () {
   app.io.set("polling duration", 10); 
 });
 
-// Configure instagram
-Instagram.set('client_id', 'settings.CLIENT_ID');
-Instagram.set('client_secret', 'settings.CLIENT_SECRET');
-
-Instagram.set('callback_url', settings.basePath + 'subscribe/');
-
 // Send the client html.
 app.get('/', function(req, res) {
     res.render('test');
-    //console.log( 'subscribing:' );
-    //console.log(Instagram.tags.subscribe({ object_id: 'justinbieber' }));
-    console.log( 'client_id : ' + settings.CLIENT_ID );
-    console.log( 'client_secrect : ' + settings.CLIENT_SECRET );
-    console.log( 'popular stuff' );
-    console.log( Instagram.media.popular({}) );
+    //console.log( Instagram._config );
+    //console.log( 'popular stuff' );
+    //console.log( Instagram.media.popular({}) );
+    Queue.collectMedia( 'justinbieber' );
 })
 
 // Send instagram verification afther their get request
@@ -41,6 +34,23 @@ app.post('/subscribe/', function(req, res){
 app.get('/unsubscribe/', function(req, res){
   console.log(Instagram.media.unsubscribe_all());
 });
+
+// Setup the ready route, and emit talk event.
+app.io.route('ready', function(req) {
+  function passImage() {
+    console.log(Queue.last());
+    setTimeout( function(e){
+      req.io.emit('image', {
+        message: 'new image incoming',
+        image: Queue.length() ? Queue.pop().images : {}
+      })
+      console.log();
+      passImage();
+    }, 5000 );
+  }
+  passImage();
+
+})
 
 console.log('server started at port ' + settings.appPort);
 app.listen(settings.appPort)
