@@ -1,7 +1,7 @@
 var settings = require('./settings'),
     connect = require('connect'),
     Instagram = settings.instagram,
-    Queue = require('insta-queue')(Instagram),
+    Queue = require('./libs/insta-queue')(Instagram),
     app = settings.app;
 app.http().io();
 
@@ -38,13 +38,12 @@ app.get('/unsubscribe/', function(req, res){
 // Setup the ready route, and emit talk event.
 app.io.route('ready', function(req) {
   function passImage() {
-    console.log(Queue.last());
     setTimeout( function(e){
+      console.log(Queue.last());
       req.io.emit('image', {
         message: 'new image incoming',
         image: Queue.length() ? Queue.pop().images : {}
-      })
-      console.log();
+      });
       passImage();
     }, 5000 );
   }

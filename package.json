@@ -14,8 +14,7 @@
     "session.socket.io": "0.1.6",
     "socket.io": "0.9.14",
     "instagram-node-lib": "~0.1.1",
-    "express.io": "~1.1.11",
-    "insta-queue": "0.0.1"
+    "express.io": "~1.1.11"
   },
   "main": "server.js",
   "scripts": {
