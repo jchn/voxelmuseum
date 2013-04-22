@@ -10,5 +10,5 @@ io.on('talk', function(data){
 
 io.on('image', function(data){
 	console.log(data.image.standard_resolution.url);
-	if(data.image.standard_resolution) $('body').append('<img src="' + data.image.standard_resolution.url + '" alt="data.message" />');
+	if(data.image.standard_resolution !== 'undefined') $('body').append('<img src="' + data.image.standard_resolution.url + '" alt="data.message" />');
 });
