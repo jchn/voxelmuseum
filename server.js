@@ -24,6 +24,12 @@ app.configure(function(){
 
   Instagram.set('callback_url', 'http://voxelmuseum.herokuapp.com/' + 'subscribe/');
 
+  // assuming io is the Socket.IO server object
+  app.io.configure(function () { 
+    app.io.set("transports", ["xhr-polling"]); 
+    app.io.set("polling duration", 10); 
+  });
+
 });
 
 app.get('/', function(req, res){
