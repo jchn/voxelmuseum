@@ -1,0 +1,14 @@
+doctype 5
+
+html
+  head
+    title #{title}
+    script(type='text/javascript', src='/socket.io/socket.io.js')
+    script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
+
+  body
+
+    h1 Media output
+    p='test'
+    each item in elements
+      li=item
