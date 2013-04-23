@@ -106,6 +106,8 @@ app.post('/subscribe/', function(req, res){
 
   }
 
+  res.send('OK');
+
 });
 
 app.get('/unsub/', function(req, res) {
@@ -118,6 +120,25 @@ app.get('/unsub/', function(req, res) {
       console.log('an error occured unsubbing');
     }
   });
+});
+
+app.get('/subs/', function(req, res) {
+
+  Instagram.subscriptions.list({
+    complete : function(data) {
+      var tags = [];
+      for( index in data ) {
+        var sub = data[index];
+        tags.push( sub.object_id );
+      }
+      res.render('subs', { tags:tags });
+    },
+    error : function() {
+      console.log( 'something went wrong getting the sub list' );
+      res.render('error');
+    }
+  })
+
 });
 
 app.listen( process.env.PORT || 5000 );
