@@ -96,9 +96,9 @@ app.get('/subscribe/', function(req, res){
 // Handle instagram updates
 app.post('/subscribe/', function(req, res){
   console.log('new update');
-  console.log(req.body.id);
+  console.log(req.body);
   //Queue.collectMedia(req.body.id);
-  req.io.emit('new-images', req.body);
+  //req.io.emit('new-images', req.body);
 
   // On new data, get the new data and broadcast it to appropriate rooms
 });
