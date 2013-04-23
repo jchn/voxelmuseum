@@ -104,6 +104,8 @@ app.post('/subscribe/', function(req, res){
     //Get recent media and broadcast it to room
     console.log(req.io);
 
+    req.io.room('req.body[index].object_id').broacast('new-images', req.body);
+
   }
 
   res.send('OK');
@@ -115,9 +117,11 @@ app.get('/unsub/', function(req, res) {
     complete : function(data) {
       console.log('unsubbed');
       console.log(data);
+      res.send('unsubbed');
     },
     error : function() {
       console.log('an error occured unsubbing');
+      res.render('error');
     }
   });
 });
