@@ -95,12 +95,17 @@ app.get('/subscribe/', function(req, res){
 
 // Handle instagram updates
 app.post('/subscribe/', function(req, res){
-  console.log('new update');
-  console.log(req.body);
-  //Queue.collectMedia(req.body.id);
-  //req.io.emit('new-images', req.body);
+  console.log('new update, should now show tag name');
 
-  // On new data, get the new data and broadcast it to appropriate rooms
+  for( index in req.body ) {
+
+    console.log( req.body[index].object_id );
+
+    //Get recent media and broadcast it to room
+    console.log(req.io);
+
+  }
+
 });
 
 app.get('/unsub/', function(req, res) {
