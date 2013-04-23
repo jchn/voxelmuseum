@@ -16,6 +16,10 @@ io.on('new-images', function(data){
 	console.log(data);
 });
 
+io.on('update-found', function(data) {
+	console.log(data);
+});
+
 // Listen for session event.
 io.on('session', function(data) {
 	var message = 'subject : ' + data.subject;

@@ -104,7 +104,9 @@ app.post('/subscribe/', function(req, res){
     //Get recent media and broadcast it to room
     console.log(req.io);
 
-    req.io.room('req.body[index].object_id').broacast('new-images', req.body);
+    req.io.broadcast('update-found', req.body);
+
+    //req.io.room('req.body[index].object_id').broacast('new-images', req.body);
 
   }
 
