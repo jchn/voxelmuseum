@@ -14,6 +14,7 @@ io.on('image', function(data){
 
 io.on('update', function(data){
 	console.log(data);
+	$('body').append('<img src="' + data.images.standard_resolution.url + '" alt="data.message" />');
 });
 
 io.on('update-found', function(data) {
