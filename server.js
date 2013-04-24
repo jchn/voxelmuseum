@@ -2,7 +2,8 @@ var express = require('express.io'),
     app = express(),
     path = require('path'),
     Instagram = require('instagram-node-lib'),
-    Queue = require('./libs/insta-queue')(Instagram);
+    Queue = require('./libs/insta-queue'),
+    queues = {};
 
 app.http().io();
 
@@ -15,7 +16,7 @@ app.configure(function(){
 
   app.use(express.static(__dirname + '/public/'));
 
-  app.use(express.cookieParser()); 
+  app.use(express.cookieParser());
   app.use(express.session({secret: 'express.io makes me happy'}));
 
   // Configure instagram
@@ -25,9 +26,9 @@ app.configure(function(){
   Instagram.set('callback_url', 'http://voxelmuseum.herokuapp.com/' + 'subscribe/');
 
   // assuming io is the Socket.IO server object
-  app.io.configure(function () { 
-    app.io.set("transports", ["xhr-polling"]); 
-    app.io.set("polling duration", 10); 
+  app.io.configure(function () {
+    app.io.set("transports", ["xhr-polling"]);
+    app.io.set("polling duration", 10);
   });
 
 });
@@ -52,9 +53,12 @@ app.io.route('ready', function(req) {
 
 // Send back the session data.
 app.io.route('subject', function(req) {
+    var _this = this;
     req.session.subject = req.data;
     req.session.save(function() {
-        
+
+      var subject = req.session.subject;
+
       req.io.join( req.session.subject );
 
       // Check list of subscriptions to check if the subject is already subbed to
@@ -65,15 +69,25 @@ app.io.route('subject', function(req) {
           console.log(data);
 
           // Check if req.session.subject already exists
+          for( var index in data ) {
+            var sub = data[index];
+            //if( sub.object_id === req.session.subject ) return;
+          }
+          console.log('subject : ');
+          console.log(req.session.subject);
+          // Create a new Queue with the subject
+          queues[req.session.subject] = new Queue( Instagram, app, req.session.subject );
+          console.log('queues: ');
+          console.log( queues );
+
         },
-        error : function() {
+        error : function(errorMessage, errorObject, caller) {
           console.log( 'something went wrong with the sub list' );
+          console.log(errorMessage);
         }
 
       });
 
-      // Subscribe to the subject
-      Instagram.subscriptions.subscribe({ object: 'tag', object_id: req.session.subject });
 /*
       Instagram.tags.recent({
           name: req.session.subject,
@@ -97,14 +111,18 @@ app.get('/subscribe/', function(req, res){
 app.post('/subscribe/', function(req, res){
   console.log('new update, should now show tag name');
 
-  for( index in req.body ) {
+  for( var index in req.body ) {
 
     console.log( req.body[index].object_id );
+
+    var tag = req.body[index].object_id;
+
+    queues[tag].collectMedia();
 
     //Get recent media and broadcast it to room
     console.log(req.io);
 
-    req.io.broadcast('update-found', req.body);
+    //req.io.broadcast('update-found', req.body);
 
     //req.io.room('req.body[index].object_id').broacast('new-images', req.body);
 
@@ -133,7 +151,7 @@ app.get('/subs/', function(req, res) {
   Instagram.subscriptions.list({
     complete : function(data) {
       var tags = [];
-      for( index in data ) {
+      for( var index in data ) {
         var sub = data[index];
         tags.push( sub.object_id );
       }
@@ -143,7 +161,7 @@ app.get('/subs/', function(req, res) {
       console.log( 'something went wrong getting the sub list' );
       res.render('error');
     }
-  })
+  });
 
 });
 
