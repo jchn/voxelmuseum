@@ -46,13 +46,17 @@ function Queue( instagram, app, tag, opts ) {
 
 Queue.prototype.push = function( obj ) {
 	for( var index in this.collection ) {
-		if( obj.id === this.collection[index] ) return false;
+		if( obj.id === this.collection[index].id ) return false;
 	}
 	return this.collection.push( obj );
 };
 
 Queue.prototype.pop = function() {
-	return this.collection.pop();
+	//return this.collection.pop();
+	// Remove 1 item at the beginning -> cleaning
+	if(this.collection.length > 1)
+		this.collection.splice(0, 1);
+	return this.collection[this.collection.length-1];
 };
 
 Queue.prototype.last = function() {
@@ -102,8 +106,15 @@ Queue.prototype.collectPopularMedia = function() {
 				_this.push( data[index] );
 			}
 
+			console.log( 'broadcasting from popular media' );
 			_this.broadcast();
 
+		},
+		error : function( errorMsg, errorData, caller ) {
+			console.log('something went wrong collecting popular media for tag :' + _this.tag);
+			console.log( errorMsg );
+			console.log( errorData );
+			console.log( caller );
 		}
 	});
 };
@@ -115,4 +126,21 @@ Queue.prototype.broadcast = function( fallback ) {
 		this.app.io.room(this.tag).broadcast('update', _this.pop());
 	else if( fallback )
 		_this.collectPopularMedia();
+};
+
+Queue.prototype.unsub = function() {
+	var _this = this;
+	this.instagram.subscriptions.unsubscribe({
+		id : this.tag,
+		complete : function(data) {
+			console.log( 'unsubbed for : ' + _this.tag );
+			console.log(data);
+		},
+		error : function( errorMsg, errorData, caller ) {
+			console.log('something went wrong unsubbing : ' + _this.tag);
+			console.log(errorMsg);
+			console.log(errorData);
+			console.log(caller);
+		}
+	});
 };

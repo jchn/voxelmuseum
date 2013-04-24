@@ -71,7 +71,7 @@ app.io.route('subject', function(req) {
           // Check if req.session.subject already exists
           for( var index in data ) {
             var sub = data[index];
-            //if( sub.object_id === req.session.subject ) return;
+            if( sub.object_id === req.session.subject ) return;
           }
           console.log('subject : ');
           console.log(req.session.subject);
@@ -133,17 +133,11 @@ app.post('/subscribe/', function(req, res){
 });
 
 app.get('/unsub/', function(req, res) {
-  Instagram.subscriptions.unsubscribe_all({
-    complete : function(data) {
-      console.log('unsubbed');
-      console.log(data);
-      res.send('unsubbed');
-    },
-    error : function() {
-      console.log('an error occured unsubbing');
-      res.render('error');
-    }
-  });
+  for( var key in queues ) {
+    var queue = queues[key];
+    queue.unsub();
+  }
+  res.send('unsubbed');
 });
 
 app.get('/subs/', function(req, res) {
