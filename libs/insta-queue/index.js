@@ -80,6 +80,7 @@ Queue.prototype.collectMedia = function( max_id, type ) {
 			// Set max_id based on pagination
 			//this.max_id = pagination;
 			console.log( pagination );
+			_this.max_id = pagination.next_max_tag_id;
 
 			_this.broadcast();
 
