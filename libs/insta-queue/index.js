@@ -3,7 +3,7 @@ module.exports = function( instagram, app, tag, opts ) {
 };
 
 module.exports.Queue = Queue;
-//TODO instead of using setTimeout, use the gameloop
+
 function Queue( instagram, app, tag, opts ) {
 
 	if (!(this instanceof Queue)) return new Queue( instagram, app, tag, opts );
@@ -13,6 +13,7 @@ function Queue( instagram, app, tag, opts ) {
 	this.instagram = instagram;
 	this.tag = tag;
 	this.max_id = 0;
+	this.sub_id = 0;
 
 	console.log('tag : ');
 	console.log(tag);
@@ -30,6 +31,11 @@ function Queue( instagram, app, tag, opts ) {
 		object: 'tag',
 		object_id: _this.tag,
 		complete : function(data) {
+
+			console.log(data);
+			console.log('sub_id : ' + data.id);
+			_this.sub_id = data.id;
+
 			// Collect some popular media
 			_this.collectPopularMedia();
 		},
@@ -83,7 +89,7 @@ Queue.prototype.collectMedia = function( max_id, type ) {
 
 			// Set max_id based on pagination
 			//this.max_id = pagination;
-			console.log( pagination );
+			//console.log( pagination );
 			_this.max_id = pagination.next_max_tag_id;
 
 			_this.broadcast();
@@ -124,14 +130,14 @@ Queue.prototype.broadcast = function( fallback ) {
 	var _this = this;
 	if( this.length() > 0 )
 		this.app.io.room(this.tag).broadcast('update', _this.pop());
-	else if( fallback )
-		_this.collectPopularMedia();
+	//else if( fallback )
+	//	_this.collectPopularMedia();
 };
 
 Queue.prototype.unsub = function() {
 	var _this = this;
 	this.instagram.subscriptions.unsubscribe({
-		id : this.tag,
+		id : this.sub_id,
 		complete : function(data) {
 			console.log( 'unsubbed for : ' + _this.tag );
 			console.log(data);

@@ -1,5 +1,9 @@
 io = io.connect();
 
+var tempRoad;
+var firstTime = true;
+var ready = true;
+
 // Emit ready event.
 io.emit('ready');
 
@@ -14,7 +18,23 @@ io.on('image', function(data){
 
 io.on('update', function(data){
 	console.log(data);
-	$('body').append('<img src="' + data.images.standard_resolution.url + '" alt="data.message" />');
+	//$('body').append('<img src="' + data.images.standard_resolution.url + '" alt="data.message" />');
+	if(firstTime) {
+		tempRoad = createRoad( game, builder, data.images.standard_resolution.url );
+		tempRoad.connect([ new game.THREE.Vector3(0, 1, 7), new game.THREE.Vector3(-5, 1, 7) ]);
+		firstTime = false;
+		ready = false;
+		tempRoad.on('complete', function(structure) {
+			ready = true;
+		});
+	} else if( ready ){
+		var prevRoad = tempRoad;
+		tempRoad = createRoad( game, builder, data.images.standard_resolution.url );
+		tempRoad.connect( prevRoad.getLiveConnectionPoints()[1].reverse() );
+	} else {
+		console.log('update ignored: not ready');
+	}
+
 });
 
 io.on('update-found', function(data) {

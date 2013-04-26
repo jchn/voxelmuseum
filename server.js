@@ -65,20 +65,15 @@ app.io.route('subject', function(req) {
       Instagram.subscriptions.list({
 
         complete : function( data ) {
-          console.log('subscriptions');
-          console.log(data);
 
           // Check if req.session.subject already exists
           for( var index in data ) {
             var sub = data[index];
             if( sub.object_id === req.session.subject ) return;
           }
-          console.log('subject : ');
-          console.log(req.session.subject);
+
           // Create a new Queue with the subject
           queues[req.session.subject] = new Queue( Instagram, app, req.session.subject );
-          console.log('queues: ');
-          console.log( queues );
 
         },
         error : function(errorMessage, errorObject, caller) {
@@ -88,17 +83,6 @@ app.io.route('subject', function(req) {
 
       });
 
-/*
-      Instagram.tags.recent({
-          name: req.session.subject,
-          complete : function(data, pagination){
-
-            req.io.emit('new-images', data); //send user first batch of data
-            console.log( data );
-
-          }
-        });
-*/
     });
 });
 
@@ -119,13 +103,6 @@ app.post('/subscribe/', function(req, res){
 
     queues[tag].collectMedia();
 
-    //Get recent media and broadcast it to room
-    console.log(req.io);
-
-    //req.io.broadcast('update-found', req.body);
-
-    //req.io.room('req.body[index].object_id').broacast('new-images', req.body);
-
   }
 
   res.send('OK');
@@ -134,9 +111,12 @@ app.post('/subscribe/', function(req, res){
 
 app.get('/unsub/', function(req, res) {
   for( var key in queues ) {
+    console.log('unsubbing:');
+    console.log(queue);
     var queue = queues[key];
     queue.unsub();
   }
+
   res.send('unsubbed');
 });
 
