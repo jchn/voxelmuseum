@@ -33,6 +33,11 @@ app.configure(function(){
 
 });
 
+app.all('/', function(req, res, next){
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 app.get('/', function(req, res){
   req.session.loginDate = new Date().toString();
   res.render('test');
