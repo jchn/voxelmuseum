@@ -3,7 +3,9 @@ var express = require('express.io'),
     path = require('path'),
     Instagram = require('instagram-node-lib'),
     Queue = require('./libs/insta-queue'),
-    queues = {};
+    queues = {},
+    http = require('http'),
+    request = require('request');
 
 app.http().io();
 
@@ -19,6 +21,7 @@ app.configure(function(){
   app.use(express.cookieParser());
   app.use(express.session({secret: 'express.io makes me happy'}));
 
+
   // Configure instagram
   Instagram.set('client_id', 'd13bba7c8b7f4d868187995c3dc9c240');
   Instagram.set('client_secret', 'bb49d84b32d94b7ebea146aa2db89806');
@@ -32,12 +35,12 @@ app.configure(function(){
   });
 
 });
-
+/*
 app.all('/', function(req, res, next){
   res.header("Access-Control-Allow-Origin", "*");
   next();
 });
-
+*/
 app.get('/', function(req, res){
   req.session.loginDate = new Date().toString();
   res.render('test');
@@ -54,6 +57,33 @@ app.io.route('ready', function(req) {
       req.io.emit('get-subject');
   });
 
+});
+
+app.get('/proxy/', function(req, res) {
+  var url = req.query.url;
+  console.log(url);
+  request(
+  {
+      uri : url,
+      encoding: null
+  }, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log('HEADERS: ' + JSON.stringify(response.headers));
+      var contenttype = response.headers['content-type'];
+      //res.setHeader('Content-Type', contenttype);
+      //res.setHeader('Content-Type', 'image/jpeg');
+      //res.setHeader(response.headers);
+      //console.log(body);
+
+      for( var key in response.headers ) {
+
+        res.setHeader( key, response.headers[key] );
+
+      }
+
+      res.end(body, 'binary');
+    }
+  })
 });
 
 // Send back the session data.

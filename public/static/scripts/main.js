@@ -20,7 +20,7 @@ io.on('update', function(data){
 	console.log(data);
 	//$('body').append('<img src="' + data.images.standard_resolution.url + '" alt="data.message" />');
 	if(firstTime) {
-		tempRoad = createRoad( game, builder, data.images.standard_resolution );
+		tempRoad = createRoad( game, builder, '/proxy/?url=' + data.images.standard_resolution );
 		tempRoad.connect([ new game.THREE.Vector3(0, 1, 7), new game.THREE.Vector3(-5, 1, 7) ]);
 		firstTime = false;
 		ready = false;
@@ -29,7 +29,7 @@ io.on('update', function(data){
 		});
 	} else if( ready ){
 		var prevRoad = tempRoad;
-		tempRoad = createRoad( game, builder, data.images.standard_resolution.url );
+		tempRoad = createRoad( game, builder, '/proxy/?url=' + data.images.standard_resolution.url );
 		tempRoad.connect( prevRoad.getLiveConnectionPoints()[1].reverse() );
 	} else {
 		console.log('update ignored: not ready');
