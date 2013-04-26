@@ -20,7 +20,7 @@ io.on('update', function(data){
 	console.log(data);
 	//$('body').append('<img src="' + data.images.standard_resolution.url + '" alt="data.message" />');
 	if(firstTime) {
-		tempRoad = createRoad( game, builder, data.images.standard_resolution.url );
+		tempRoad = createRoad( game, builder, data.images.standard_resolution );
 		tempRoad.connect([ new game.THREE.Vector3(0, 1, 7), new game.THREE.Vector3(-5, 1, 7) ]);
 		firstTime = false;
 		ready = false;
