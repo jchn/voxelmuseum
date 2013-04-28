@@ -9,9 +9,6 @@ var createRoad = require('road');
 
 var start = require('./assets/start_platform.json');
 
-//production
-//var pTextureUrl = '/static/assets/textures/';
-
 console.log('start');
 
 module.exports = function(opts, setup) {
@@ -47,23 +44,7 @@ module.exports = function(opts, setup) {
   var builder = createBuilder(game)
   window.builder = builder;
   window.createRoad = createRoad;
-  /*
-  var road = createRoad(game, builder, '/assets/instafoto.jpg');
-  
-  road.connect([ new game.THREE.Vector3(0, 1, 7), new game.THREE.Vector3(-5, 1, 7) ]);
 
-  road.on('complete', function() {
-    var r = createRoad( game, builder, '/assets/instafoto.jpg' );
-    console.log(road.getConnectionPoints()[1]);
-    r.connect( road.getLiveConnectionPoints()[1].reverse() );
-      r.on('complete', function() {
-        var a = createRoad( game, builder, '/assets/instafoto.jpg' );
-        a.connect( r.getLiveConnectionPoints()[1].reverse() );
-      });
-  });
-
-  window.road = road;
-*/
   builder.placeObject( start );
 
 
@@ -111,7 +92,6 @@ function defaultSetup(game, avatar) {
     else {
       position = blockPosErase
       console.log(position);
-      //if (position) game.setBlock(position, 0)
     }
   })
 

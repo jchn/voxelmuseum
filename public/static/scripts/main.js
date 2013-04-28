@@ -18,7 +18,6 @@ io.on('image', function(data){
 
 io.on('update', function(data){
 	console.log(data);
-	//$('body').append('<img src="' + data.images.standard_resolution.url + '" alt="data.message" />');
 	if(firstTime) {
 		tempRoad = createRoad( game, builder, '/proxy/?url=' + data.images.standard_resolution );
 		tempRoad.connect([ new game.THREE.Vector3(0, 1, 7), new game.THREE.Vector3(-5, 1, 7) ]);
