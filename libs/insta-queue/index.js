@@ -88,8 +88,6 @@ Queue.prototype.collectMedia = function( max_id, type ) {
 			}
 
 			// Set max_id based on pagination
-			//this.max_id = pagination;
-			//console.log( pagination );
 			_this.max_id = pagination.next_max_tag_id;
 
 			_this.broadcast();
@@ -130,8 +128,6 @@ Queue.prototype.broadcast = function( fallback ) {
 	var _this = this;
 	if( this.length() > 0 )
 		this.app.io.room(this.tag).broadcast('update', _this.pop());
-	//else if( fallback )
-	//	_this.collectPopularMedia();
 };
 
 Queue.prototype.unsub = function() {
